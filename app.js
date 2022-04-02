@@ -17,7 +17,7 @@ app.get('/login', (req, res)=>{
 })
 
 app.get('/signup', (req, res)=>{
-    res.send('signup here')
+    res.render("signup.ejs")
 })
 
 app.get('/available', (req, res)=>{

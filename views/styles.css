@@ -13,3 +13,15 @@
     background-color: red;
     margin: 2%;
 }
+
+.required{
+  color: red;
+}
+
+.signupbox{
+  margin-top: 2%;
+}
+
+.signuplabel{
+  margin-left:3%;
+}
