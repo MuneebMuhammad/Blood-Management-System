@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Save Life</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <%- include('./partials/header.html')%>
+    <div
+      style="
+        margin-left: 65%;
+        margin-top: 5%;
+        background-color: pink;
+        width: 25%;
+        padding: 1%;
+        border-radius: 5px;
+      "
+    >
+      <center>
+        <form method="post">
+          <input
+            class="startPagebuttons"
+            type="button"
+            value="LOG IN"
+            id="login"
+          />
+          <br />
+          <input
+            class="startPagebuttons"
+            type="button"
+            value="SIGN UP"
+            id="signup"
+          />
+
+          <input
+            class="startPagebuttons"
+            style="background-color: rgb(102, 255, 0); margin-top: 15%"
+            type="button"
+            value="CHECK BLOOD AVAILABILITY"
+            id="available"
+          />
+        </form>
+      </center>
+    </div>
+    <script>
+      $("#login").click(function () {
+        location.href = "http://localhost:3000/login/";
+      });
+      $("#signup").click(function () {
+        location.href = "http://localhost:3000/signup/";
+      });
+      $("#available").click(function () {
+        location.href = "http://localhost:3000/available/";
+      });
+    </script>
+  </body>
+</html>
