@@ -17,7 +17,11 @@ app.get('/login', (req, res)=>{
 })
 
 app.get('/signup', (req, res)=>{
+<<<<<<< HEAD
     res.send('signup here')
+=======
+    res.render("signup.ejs")
+>>>>>>> 295c136ee5dc3b17519cf88b2302af3e51b416d9
 })
 
 app.get('/available', (req, res)=>{

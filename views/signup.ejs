@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anybody:wght@400;600&family=BIZ+UDPMincho&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <%- include('./partials/header.html')%>
+    <div
+      style="
+        font-size: 20px;
+        font-family: 'Anybody', cursive;
+        margin-top: 4%;
+        margin-left: 4%;
+      "
+    >
+      Fill the details below
+    </div>
+    <div
+      style="
+        margin-left: 3%;
+        width: 30%;
+        background-color: black;
+        border: 1px solid black;
+      "
+    ></div>
+    <form>
+      <label class="signuplabel" for="username"
+        ><span
+          >Username <span class="required">* </span
+          ><input
+            style="margin-left: 75px"
+            class="signupbox"
+            type="text"
+            name="username" /></span
+      ></label>
+      <br />
+      <label class="signuplabel" for="password"
+        ><span
+          >Password <span class="required">* </span
+          ><input
+            style="margin-left: 80px"
+            class="signupbox"
+            type="password"
+            name="password" /></span
+      ></label>
+      <br />
+      <label class="signuplabel" for="cfmpass"
+        ><span
+          >Confirm password <span class="required">* </span
+          ><input
+            style="margin-left: 24px"
+            class="signupbox"
+            type="password"
+            name="cfmpass" /></span
+      ></label>
+      <br />
+      <label class="signuplabel" for="hname"
+        ><span
+          >Hospital Name <span class="required">* </span
+          ><input
+            style="margin-left: 45px"
+            class="signupbox"
+            type="text"
+            name="hname" /></span
+      ></label>
+      <br />
+      <label class="signuplabel" for="address"
+        ><span
+          >Hospital Address <span class="required">* </span
+          ><input
+            style="margin-left: 32px"
+            class="signupbox"
+            type="text"
+            name="address" /></span
+      ></label>
+      <br />
+      <label class="signuplabel" for="city"
+        ><span
+          >City <span class="required">* </span
+          ><input
+            style="margin-left: 115px"
+            class="signupbox"
+            type="text"
+            name="city" /></span
+      ></label>
+      <br />
+      <label class="signuplabel" for="iso"
+        ><span
+          >ISO number <span class="required">* </span
+          ><input
+            style="margin-left: 65px"
+            class="signupbox"
+            type="text"
+            name="iso" /></span
+      ></label>
+      <br />
+      <label class="signuplabel"
+        ><span>Care Type <span class="required"> *</span></span></label
+      >
+      <select style="margin-left: 77px" class="signupbox" name="care" id="care">
+        <option value="primary">Primary Care</option>
+        <option value="secondary">Secondary Care</option>
+        <option value="tertiary">Tertiary Care</option>
+      </select>
+      <br />
+      <input
+        style="
+          margin-left: 200px;
+          margin-top: 4%;
+          width: 100px;
+          height: 50px;
+          background-color: green;
+          border-radius: 5px;
+        "
+        type="button"
+        value="Submit"
+        id="subbtn"
+      />
+    </form>
+    <script>
+      $(document).ready(function () {
+        $("#subbtn").click(function () {
+          let username = $("input:text[name=username]").val();
+          let password = $("input:password[name=password]").val();
+          let cfmpass = $("input:password[name=cfmpass]").val();
+          let hname = $("input:text[name=hname]").val();
+          let address = $("input:text[name=address]").val();
+          let city = $("input:text[name=city]").val();
+          let iso = $("input:text[name=iso]").val();
+          let care = $("#care").find(":selected").val();
+        });
+      });
+    </script>
+  </body>
+</html>

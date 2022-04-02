@@ -12,4 +12,19 @@
     border-radius: 5px;
     background-color: red;
     margin: 2%;
+<<<<<<< HEAD
+=======
+}
+
+.required{
+  color: red;
+}
+
+.signupbox{
+  margin-top: 2%;
+}
+
+.signuplabel{
+  margin-left:3%;
+>>>>>>> 295c136ee5dc3b17519cf88b2302af3e51b416d9
 }
