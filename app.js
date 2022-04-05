@@ -68,12 +68,19 @@ app.post('/signup', (req, res)=>{
                     }
                 }
                 console.log("errors: ", unameerr, passerr, h_iderr)
-                db.end();
+                
                 if (unameerr || passerr || h_iderr){
                     res.render("signup.ejs", {alt: false, passerr: passerr, unameerr: unameerr, h_iderr: h_iderr})
+                    db.end();
                     return;
                   }
                   else{
+
+                       db.query(`Insert into hospitals values('${upData.iso}', '${upData.hname}', '${upData.address}', '${upData.city}', '${upData.care}', '${upData.username}', '${upData.password}')`, function(err, result){
+                        if (err) throw err;
+                        console.log("1 record inserted");
+                       })
+                       db.end();
                        res.redirect("/requestBlood")
                        return;
                   }
