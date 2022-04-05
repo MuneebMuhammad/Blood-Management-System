@@ -32,7 +32,7 @@
         border: 1px solid black;
       "
     ></div>
-    <form>
+    <form method="post" action="/signup">
       <label class="signuplabel" for="username"
         ><span
           >Username <span class="required">* </span
@@ -107,9 +107,9 @@
         ><span>Care Type <span class="required"> *</span></span></label
       >
       <select style="margin-left: 77px" class="signupbox" name="care" id="care">
-        <option value="primary">Primary Care</option>
-        <option value="secondary">Secondary Care</option>
-        <option value="tertiary">Tertiary Care</option>
+        <option value="1">Primary Care</option>
+        <option value="2">Secondary Care</option>
+        <option value="3">Tertiary Care</option>
       </select>
       <br />
       <input
@@ -121,24 +121,32 @@
           background-color: green;
           border-radius: 5px;
         "
-        type="button"
+        type="Submit"
         value="Submit"
         id="subbtn"
       />
     </form>
+    <ul id="print_err"></ul>
     <script>
-      $(document).ready(function () {
-        $("#subbtn").click(function () {
-          let username = $("input:text[name=username]").val();
-          let password = $("input:password[name=password]").val();
-          let cfmpass = $("input:password[name=cfmpass]").val();
-          let hname = $("input:text[name=hname]").val();
-          let address = $("input:text[name=address]").val();
-          let city = $("input:text[name=city]").val();
-          let iso = $("input:text[name=iso]").val();
-          let care = $("#care").find(":selected").val();
-        });
-      });
+      let alt = <%= alt %>;
+      let unameerr = <%= unameerr %>;
+      let passerr = <%= passerr %>;
+      let h_iderr = <%= h_iderr %>;
+
+      if (alt){
+        alert('empty fields');
+      }
+      else{
+        if (unameerr){
+          $("ul").append(`<li>Username already exists</li>`)
+        }
+        if (passerr){
+          $("ul").append(`<li>Passwords don't match</li>`)
+        }
+        if (h_iderr){
+          $("ul").append(`<li>This iso number already registered</li>`)
+        }
+      }
     </script>
   </body>
 </html>
