@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <%- include('./partials/header.html')%>
+    <div
+      style="
+        border: 1px solid black;
+        background-color: red;
+        margin-top: 100px;
+        margin-left: 2%;
+        width: 30%;
+        border-radius: 5px;
+      "
+    >
+      <form method="post" action="/login">
+        <label for="username"
+          >Username:
+          <input
+            style="margin-top: 20px; height: 20px"
+            type="text"
+            name="username"
+          />
+        </label>
+        <br />
+        <label for="password"
+          >Password:
+          <input
+            style="margin-left: 3px; margin-top: 20px; height: 20px"
+            type="password"
+            name="password"
+        /></label>
+        <br />
+        <input
+          style="
+            margin-top: 50px;
+            margin-left: 30%;
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+          "
+          type="submit"
+          name="enter"
+          value="Login"
+        />
+      </form>
+    </div>
+    <script>
+      let errorType = "<%= errorType %>";
+
+      if (errorType === "empty") {
+        alert("Kindly fill both the fields");
+      } else if (errorType === "password") {
+        alert("Incorrect Password");
+      } else if (errorType === "uname") {
+        alert("This username is not registered");
+      }
+    </script>
+  </body>
+</html>

@@ -33,7 +33,41 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/login', (req, res)=>{
-    res.send('Login here')
+    res.render('login', {errorType: null})
+})
+
+app.post('/login', (req, res)=>{
+    upData = req.body;
+    if(!upData.username || !upData.password){
+        res.render('login.ejs', {errorType: "empty"})
+        return;
+    }
+    else{
+        db = connect_database()
+        db.connect(function(err){
+            if (err) throw err;
+            db.query("Select username, password from hospitals", function(err, result, fields){
+                let row_num = result.length;
+                for (let i=0; i<row_num; i++){
+                    if (result[i].username === upData.username){
+                        if (result[i].password === upData.password){
+                            db.end()
+                            res.redirect("/requestBlood")
+                            return;
+                        }
+                        else{
+                            db.end()
+                            res.render("login.ejs", {errorType: "password"})
+                            return;
+                        }
+                    }
+                }
+                db.end()
+                res.render("login.ejs", {errorType: "uname"})
+                return;
+            })
+        })
+    }
 })
 
 app.get('/signup', (req, res)=>{
