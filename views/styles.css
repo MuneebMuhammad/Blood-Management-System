@@ -25,3 +25,11 @@
 .signuplabel {
   margin-left: 3%;
 }
+
+.navbtn {
+  margin: 2%;
+  background-color: rgb(249, 173, 173);
+  border-radius: 5px;
+  width: 150px;
+  height: 50px;
+}

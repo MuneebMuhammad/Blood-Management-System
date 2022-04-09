@@ -14,7 +14,7 @@ function connect_database(){
         database: "wep"
     })
     return con;
-}
+}   
 
 
 app.use(express.static('views'))
@@ -25,7 +25,6 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array()); 
-
 
 
 app.get('/', (req, res)=>{
@@ -46,13 +45,13 @@ app.post('/login', (req, res)=>{
         db = connect_database()
         db.connect(function(err){
             if (err) throw err;
-            db.query("Select username, password from hospitals", function(err, result, fields){
+            db.query("Select username, password, h_id from hospitals", function(err, result, fields){
                 let row_num = result.length;
                 for (let i=0; i<row_num; i++){
                     if (result[i].username === upData.username){
                         if (result[i].password === upData.password){
                             db.end()
-                            res.redirect("/requestBlood")
+                            res.redirect(`/requestBlood/${result[i].h_id}`)
                             return;
                         }
                         else{
@@ -90,7 +89,7 @@ app.post('/signup', (req, res)=>{
         db = connect_database();
         db.connect(function(err) {
             if (err) throw err;
-            db.query("SELECT * FROM hospitals", function (err, result, fields) {
+            db.query("SELECT username, h_id FROM hospitals", function (err, result, fields) {
                 let row_num = result.length;
                 for (i = 0; i<row_num; i++){
                     if (result[i].username === upData.username){
@@ -115,7 +114,7 @@ app.post('/signup', (req, res)=>{
                         console.log("1 record inserted");
                        })
                        db.end();
-                       res.redirect("/requestBlood")
+                       res.redirect(`/requestBlood/${upData.iso}`)
                        return;
                   }
             });            
@@ -143,10 +142,47 @@ app.get('/contactus', (req, res)=>{
     res.send('contact us page')
 })
 
-app.get('/requestBlood', (req, res)=>{
-    res.send("Request blood bags")
+app.get('/requestBlood/:hid', (req, res)=>{
+    // console.log("id in get = ", req.params.hid)
+    res.render('requestBlood.ejs', {showing: "nothing", hid: req.params.hid})
 })
 
+app.post('/requestBlood/:hid', (req, res)=>{
+    let upData = req.body;
+    let id = req.params.hid
+    console.log("id is: ", id)
+    if (!upData.bType || !upData.quantity || !upData.urgent){
+        res.render("requestBlood.ejs", {showing: "empty", hid: id})
+        return;
+    }
+    else{
+        res.render("requestBlood.ejs", {showing: "success", hid: id})
+        db = connect_database();
+        db.connect(function(err){
+            if (err) throw err;
+            let currentdate = new Date();
+            let date_time = currentdate.getFullYear() + "-" + currentdate.getMonth() 
+            + "-" + currentdate.getDay() + " " 
+            + currentdate.getHours() + ":" 
+            + currentdate.getMinutes() + ":" + currentdate.getSeconds()
+            console.log("data passed: ", id, date_time, upData.quantity, "0", upData.quantity)
+            db.query(`insert into requests (receiver_hid, request_datetime, quantity, acceptance_status, blood_type_id) values('${id}', '${date_time}', '${upData.quantity}', '0', '${upData.bType}');`, function (err, result, fields) {
+                if (err) throw err;
+                console.log("row inserted in reqests");
+        });
+        db.end();
+    });
+        return;
+    }
+})
+
+app.get('/addBlood', (req, res)=>{
+    res.send("Add Blood page")
+})
+
+app.get('/requestRecieved', (req, res)=>{
+    res.send("Request Recieved page")
+})
 
 app.listen(3000, ()=>{
     console.log("Server is running")
