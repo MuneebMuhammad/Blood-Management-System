@@ -24,7 +24,6 @@ app.get('/hospitalIso', (req, res)=>{
 });
 
 app.post('/registerHospital', (req, res)=>{
-    console.log("okayyy")
     const qry = "Insert into hospitals values(?,?,?,?,?,?,?)"
     db.query(qry, [req.body.iso, req.body.name, req.body.address, req.body.city, req.body.care, req.body.userName, req.body.pass], (err, result)=>{
         console.log(err)
@@ -32,6 +31,20 @@ app.post('/registerHospital', (req, res)=>{
     res.sendStatus(200)
 });
 
+app.post('/login', (req, res)=>{
+    const qry = 'Select * from hospitals where username = "' + req.body.userName + '" and password = "' + req.body.password + '"';
+    console.log(qry)
+    db.query(qry, (err, result)=>{
+        console.log(result)
+        if(result.length === 0){
+            res.send([-1])  
+        }
+        else{
+            res.send([result[0].h_id]) // data is send in array, not in integer
+        }
+    })
+    
+})
 
 
 

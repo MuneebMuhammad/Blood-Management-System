@@ -1,8 +1,20 @@
 import React, { Component} from 'react';
+import ReactDOM from 'react-dom';
+import { useNavigate } from 'react-router';
 import NavBar from './navbar';
 import Axios from 'axios';
+import RequestBlood from './requestBlood';
 
-class SignUp extends Component {
+function SignUp() {
+  let navigate = useNavigate()
+  return ( 
+    <SignUpClass navigate = {navigate}/>
+   );
+}
+
+export default SignUp;
+
+class SignUpClass extends Component {
     state = { 
         name: "",
         userName: "",
@@ -23,13 +35,11 @@ class SignUp extends Component {
  
     handleRegister = ()=>{
         let isoe = false 
-
+        
         if (this.state.name === "" || this.state.userName === "" || this.state.pass === "" || this.state.cfmPass === "" || this.state.phn ===  ""|| this.state.city === "" || this.state.care === ""){
-            console.log("Kindly fill out every field")
             this.setState({emptyErr: true})
         }
         else if (this.state.pass !== this.state.cfmPass){
-            console.log("Passwords do not match")
             this.setState({passErr: true})
         }
         else{
@@ -38,18 +48,17 @@ class SignUp extends Component {
                 if (response.data[i].h_id == this.state.iso || response.data[i].username == this.state.name){
                     isoe = true;
                     this.setState({isoErr: true})
-                    console.log("Username and Iso number should be unique")
                     break;
                 }
             }
                 if (!isoe){
                     Axios.post('http://localhost:3001/registerHospital', {name: this.state.name, userName: this.state.userName, pass: this.state.pass,
                     cfmPass: this.state.pass, phn: this.state.phn, city: this.state.city, care: this.state.care, iso: this.state.iso, address: this.state.address}).then(()=>{
-                    alert("success ")
                     });
                     console.log("Hospital Regestered")
                     this.setState({isoErr: false, emptyErr: false, passErr: false})
                     isoe = false;
+                    this.props.navigate('/requestBlood', {state: {iso: this.state.iso,}})
                 }
             })        
             
@@ -65,45 +74,55 @@ class SignUp extends Component {
 
     handleName = (event)=>{
         this.setState({name: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     handleUserName = (event)=>{
         this.setState({userName: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     handlePass = (event)=>{
         this.setState({pass: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     handleCfmPass = (event)=>{
         this.setState({cfmPass: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     handlePhone = (event)=>{
         this.setState({phn: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     handleCare = (event)=>{
         this.setState({care: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     handleCity = (event)=>{
         this.setState({city: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     handleIso = (event)=>{
         this.setState({iso: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     handleAddr = (event)=>{
         this.setState({address: event.target.value})
+        this.setState({passErr: false, emptyErr: false, isoErr: false})
     }
 
     render() { 
+      
         return (
             <React.Fragment>
                 <NavBar guest="false"/>
-
+                
                 <section className="vh-100" style={{backgroundcolor: 'red'}}>
   <div className="container h-100">
     <div className="row d-flex justify-content-center align-items-center h-100">
@@ -195,13 +214,20 @@ class SignUp extends Component {
                   </div>
 
                   <div className="form-check d-flex justify-content-center mb-5">
-                    <input onClick={this.handleToggle} className="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                    <input onChange={this.handleToggle} className="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
                     <label className="form-check-label" htmlFor="form2Example3">
                       I agree all statements in <a href="/termscond">Terms of service</a>
                     </label>
                   </div>
 
-                  <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                  <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4" style={{color: "red"}}>
+                  {this.state.emptyErr && <h6 style={{textDecorationLine: 'underline'}}> Kindly fill all the fields</h6>}
+                  {this.state.passErr && <h6 style={{textDecorationLine: 'underline'}}> Passwords do not match</h6>}
+                  {this.state.isoErr && <h6 style={{textDecorationLine: 'underline'}}> Iso or username already exists</h6>}
+
+                  </div>
+
+                  <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4" >
                     <button onClick={(e) => this.handleRegister(e)} disabled={this.state.termsToggle} type="button" className="btn btn-primary btn-lg">Register</button>
                   </div>
 
@@ -227,4 +253,4 @@ class SignUp extends Component {
     }
 }
  
-export default SignUp;
+// export default SignUpClass;
