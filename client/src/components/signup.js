@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router';
 import NavBar from './navbar';
 import Axios from 'axios';
-import RequestBlood from './requestBlood';
 
 function SignUp() {
   let navigate = useNavigate()

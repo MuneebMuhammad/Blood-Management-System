@@ -46,6 +46,47 @@ app.post('/login', (req, res)=>{
     
 })
 
+// returns most appropriate hospitals to whom the request will be sent
+function findNearestHospitals(iso, bType){
+    return Array(1, 2, 3)
+}
+
+
+app.post('/requestBlood', (req, res)=>{
+    let upData = req.body;
+    let r_id;
+    let currentdate = new Date();
+    // get date in mysql date formate
+    let date_time = currentdate.getFullYear() + "-" + (currentdate.getMonth()+1)
+    + "-" + currentdate.getDate() + " " 
+    + currentdate.getHours() + ":" 
+    + currentdate.getMinutes() + ":" + currentdate.getSeconds()
+
+    // this query will insert a request in requests table. 
+    db.query(`insert into requests (receiver_hid, request_datetime, quantity, acceptance_status, blood_type_id) values('${upData.iso}', '${date_time}', ${upData.qty}, '0', '${upData.bloodType}');`, function (err, result, fields) {
+        if (err) throw err;
+        else {
+            // get the request_id of this new request
+            db.query(`select request_id from requests where request_datetime = '${date_time}' and receiver_hid = ${upData.iso}`, function(err, result, fields){
+                if (err) throw err;
+                else {
+                    r_id = result[0].request_id;
+                    sendToHospitals = findNearestHospitals(upData.iso, upData.bType);
+
+                    sendToHospitals.forEach(element => {
+                        // Insert requests recievers in sender table
+                        db.query('insert into sender (request_id, sender_id) values (?, ?);', [r_id, element], function(err, result, fields){
+                            if (err) throw err;
+                        })
+                    });
+                        }
+            })
+        }
+    });
+    
+    res.sendStatus(200)
+})
+
 
 
 app.listen(3001, ()=>{

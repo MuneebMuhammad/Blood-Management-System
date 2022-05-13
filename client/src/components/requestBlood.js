@@ -3,6 +3,7 @@ import NavBar from './navbar';
 import { useLocation } from "react-router-dom";
 import NoPage from './noPage';
 import SubNavbar from './SubNavBar';
+import Axios from 'axios';
 
 function RequestBlood() {
     let {state} = useLocation()  // gets the value passed in usenavigate() hook
@@ -25,6 +26,20 @@ class RequestBloodClass extends Component {
         correct: false
      } 
     
+    handleSubmit = ()=>{
+        if (isNaN(this.state.qty)){
+            this.setState({emptyErr: true})
+        }
+        else if (this.state.qty <=0 || this.state.qty >=100){
+            this.setState({rangeErr: true})
+        }
+        else{
+            this.setState({correct: true})
+            Axios.post('http://localhost:3001/requestBlood', {iso: this.props.iso[0], bloodType: this.state.bloodType, qty: this.state.qty, immdStat: this.state.immdStat}).then(()=>{})
+
+        }
+    }
+
     handleToggle = ()=>{
         let newstate = this.state.toggleState ? false : true;
         this.setState({toggleState: newstate})
@@ -47,17 +62,6 @@ class RequestBloodClass extends Component {
         this.setState({immdStat: event.target.value, emptyErr: false, rangeErr: false, correct: false})
     }
 
-    handleSubmit = ()=>{
-        if (isNaN(this.state.qty)){
-            this.setState({emptyErr: true})
-        }
-        else if (this.state.qty <=0 || this.state.qty >=100){
-            this.setState({rangeErr: true})
-        }
-        else{
-            this.setState({correct: true})
-        }
-    }
 
     render() { 
         return (
