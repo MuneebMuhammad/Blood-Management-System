@@ -6,7 +6,7 @@ class NavBar extends Component {
     state = {  } 
     render() { 
         return (
-            <nav className="navbar navbar-light bg-light">
+            <nav className="navbar navbar-light bg-light" >
                 <div className="container">
                     <MediaQuery minWidth={407}>
                     <img src="logo.png" alt="" width="50" height="40"/>

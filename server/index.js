@@ -33,7 +33,6 @@ app.post('/registerHospital', (req, res)=>{
 
 app.post('/login', (req, res)=>{
     const qry = 'Select * from hospitals where username = "' + req.body.userName + '" and password = "' + req.body.password + '"';
-    console.log(qry)
     db.query(qry, (err, result)=>{
         console.log(result)
         if(result.length === 0){
@@ -87,6 +86,12 @@ app.post('/requestBlood', (req, res)=>{
     res.sendStatus(200)
 })
 
+app.post('/plusBlood', (req, res)=>{
+    db.query('insert into blood (blood_type_id, submission_date, expiration_date, hid, quantity) values (?,?,?,?,?)', [req.body.bloodType, req.body.beginDate, req.body.expireDate, req.body.iso, req.body.qty], (err, result, fields)=>{
+        if (err) throw err
+    })
+    res.sendStatus(200)
+})
 
 
 app.listen(3001, ()=>{

@@ -67,8 +67,8 @@ class RequestBloodClass extends Component {
         return (
             <React.Fragment>
                 <NavBar guest="true"/>
-                <SubNavbar iso={this.props.iso}/>
-                <div className="container" style={{marginTop: "40px"}}>
+                <SubNavbar iso={this.props.iso} page="rb"/>
+                <div className="container" >
                     <h2>Request Details</h2>
                     <form>
                     <div className="form-group">

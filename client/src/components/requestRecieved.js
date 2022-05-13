@@ -19,7 +19,7 @@ class RequestRecievedClass extends Component {
         return (
             <React.Fragment>
                 <NavBar guest="true" />
-                <SubNavbar iso={this.props.iso}/>
+                <SubNavbar iso={this.props.iso} page="rr"/>
                 <h1>Request Recieved</h1>
                 {this.props.iso}
             </React.Fragment>
