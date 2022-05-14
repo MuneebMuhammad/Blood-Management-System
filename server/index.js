@@ -97,14 +97,23 @@ app.post('/removeBlood', (req, res)=>{
     console.log(req.body.Bid)
     db.query(`Select hid from blood where blood_id = '${req.body.Bid}'`, (err, result, fields)=>{
         if (err) throw err
-        else console.log(result[0].hid)
-        if (req.body.iso == result[0].hid){
+        else if (result.length !=0 && (req.body.iso == result[0].hid)){
             db.query('delete from blood where blood_id = ?', [req.body.Bid], (err, result, fields)=>{
                 if (err) throw err
-                else console.log("success")
+                else res.send([1])
             })
         }
+        else{
+            res.send([0])
+        }
     })
+})
+
+app.post('/bloodData', (req, res)=>{
+    db.query(`Select blood_id, blood_type_id, submission_date, expiration_date, quantity from blood where hid = '${req.body.iso}'`, (err, result, fields)=>{
+        res.send(result)
+    })
+    
 })
 
 app.listen(3001, ()=>{
