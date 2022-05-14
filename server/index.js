@@ -93,6 +93,19 @@ app.post('/plusBlood', (req, res)=>{
     res.sendStatus(200)
 })
 
+app.post('/removeBlood', (req, res)=>{
+    console.log(req.body.Bid)
+    db.query(`Select hid from blood where blood_id = '${req.body.Bid}'`, (err, result, fields)=>{
+        if (err) throw err
+        else console.log(result[0].hid)
+        if (req.body.iso == result[0].hid){
+            db.query('delete from blood where blood_id = ?', [req.body.Bid], (err, result, fields)=>{
+                if (err) throw err
+                else console.log("success")
+            })
+        }
+    })
+})
 
 app.listen(3001, ()=>{
     console.log("Server running on port 3001")

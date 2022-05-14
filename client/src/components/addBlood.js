@@ -42,9 +42,9 @@ class AddBloodClass extends Component {
                 <SubNavbar iso={this.props.iso} page="ab"/>
                 <center style={{marginBottom: "20px"}}>
                     <form>
-                        <button onClick={this.handlePlus} type='button' style={{borderRightWidth:"0px", height: "50px", width: "20%"}}>Add Blood</button>
-                        <button onClick={this.handleRemove} type='button' style={{borderRightWidth:"0px",height: "50px", width: "20%"}}>Remove Blood</button>
-                        <button onClick={this.handleData} type='button' style={{height: "50px", width: "20%"}}>Current data</button>
+                        <button onClick={this.handlePlus} type='button' style={{borderRightWidth:"0px", height: "50px", width: "20%", color: this.state.plusbtn ? "silver": ""}}>Add Blood</button>
+                        <button onClick={this.handleRemove} type='button' style={{borderRightWidth:"0px",height: "50px", width: "20%", color: this.state.removebtn ? "silver": ""}}>Remove Blood</button>
+                        <button onClick={this.handleData} type='button' style={{height: "50px", width: "20%", color: this.state.databtn ? "silver": ""}}>Current data</button>
                     </form>
                 </center>
                 {this.state.removebtn ? <RemoveBlood iso={this.props.iso}/>: ""}

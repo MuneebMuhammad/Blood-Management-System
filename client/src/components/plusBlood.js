@@ -15,24 +15,24 @@ class PlusBlood extends Component {
     } 
 
     handleType = (event)=>{
-        this.setState({bloodType: event.targe.value})
+        this.setState({bloodType: parseInt(event.target.value), correct: false})
     }
 
     handleQty = (event)=>{
         if (!isNaN(event.target.value)){
-            this.setState({qty: parseInt(event.target.value), emptyErr: false, rangeErr: false, expireErr: false})
+            this.setState({qty: parseInt(event.target.value), emptyErr: false, rangeErr: false, expireErr: false, correct: false})
         }
         else{
-            this.setState({emptyErr: false, rangeErr: false, expireErr: false})
+            this.setState({emptyErr: false, rangeErr: false, expireErr: false, correct: false})
         }
     }
 
     handleBegin = (event)=>{
-        this.setState({beginDate: (event.target.value + " 00:00:00") , emptyErr: false, rangeErr: false, expireErr: false})
+        this.setState({beginDate: (event.target.value + " 00:00:00") , emptyErr: false, rangeErr: false, expireErr: false, correct: false})
     }
 
     handleExpire = (event)=>{
-        this.setState({expireDate: (event.target.value + " 00:00:00"), emptyErr: false, rangeErr: false, expireErr: false})
+        this.setState({expireDate: (event.target.value + " 00:00:00"), emptyErr: false, rangeErr: false, expireErr: false, correct: false})
     }
 
     handleSubmit = ()=>{
@@ -43,7 +43,9 @@ class PlusBlood extends Component {
         else if (this.state.beginDate > this.state.expireDate)
             this.setState({expireErr: true})
         else{
-            Axios.post('http://localhost:3001/plusBlood', {iso: this.props.iso, beginDate: this.state.beginDate, expireDate: this.state.expireDate, bloodType: this.state.bloodType, qty: this.state.qty}).then(()=>{})
+            Axios.post('http://localhost:3001/plusBlood', {iso: this.props.iso, beginDate: this.state.beginDate, expireDate: this.state.expireDate, bloodType: this.state.bloodType, qty: this.state.qty}).then(()=>{
+                this.setState({correct: true})
+            })
         }
     }
 
@@ -83,6 +85,7 @@ class PlusBlood extends Component {
                     {this.state.expireErr && <h5 style={{color: "red"}}>Expiration date should be after extraction date</h5>}
                     {this.state.emptyErr && <h5 style={{color: "red"}}>Kindly Fill all the fields</h5>}
                     {this.state.rangeErr && <h5 style={{color: "red"}}>Quantity should only contain numbers between 1 to 100</h5>}
+                    {this.state.correct && <h5 style={{color: "green"}}>Successfully Added Blood!</h5>}
             </div>
         </React.Fragment>
         );
