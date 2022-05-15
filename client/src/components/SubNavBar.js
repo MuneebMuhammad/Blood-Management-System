@@ -9,7 +9,7 @@ function SubNavbar(props) {
         <nav className="nav nav-pills nav-fill" style={{marginBottom: "40px"}}>
             <Link className="nav-item nav-link" style={{color: props.page === "rb"? "maroon": "red"}} to={"/requestBlood"} state={{iso: state.iso}}>Request Blood</Link>
             <Link className="nav-item nav-link" style={{color: props.page === "ab"? "maroon": "red"}} to={"/addBlood"} state={{iso: state.iso}}>Update Blood</Link>
-            <Link className="nav-item nav-link" style={{color: props.page === "rr"? "maroon": "red"}} to={"/requestRecieved"} state={{iso: state.iso}}>Request Recieved</Link>
+            <Link className="nav-item nav-link" style={{color: props.page === "rr"? "maroon": "red"}} to={"/requestRecieved"} state={{iso: state.iso}}>Request Received</Link>
         </nav>
      );
 }

@@ -62,7 +62,7 @@ app.post('/requestBlood', (req, res)=>{
     + currentdate.getMinutes() + ":" + currentdate.getSeconds()
 
     // this query will insert a request in requests table. 
-    db.query(`insert into requests (receiver_hid, request_datetime, quantity, acceptance_status, blood_type_id) values('${upData.iso}', '${date_time}', ${upData.qty}, '0', '${upData.bloodType}');`, function (err, result, fields) {
+    db.query(`insert into requests (receiver_hid, request_datetime, quantity, acceptance_status, blood_type_id, immediate_status) values('${upData.iso}', '${date_time}', ${upData.qty}, '0', '${upData.bloodType}', ${upData.immdStat});`, function (err, result, fields) {
         if (err) throw err;
         else {
             // get the request_id of this new request
@@ -114,6 +114,40 @@ app.post('/bloodData', (req, res)=>{
         res.send(result)
     })
     
+})
+
+app.post('/requestRecieved', (req, res)=>{
+    db.query(`Select * from sender where sender_id = ${req.body.iso} and accepted = 0`, (err, result, fields)=>{
+        if (err) throw err
+        else{
+            let myRequests = [];
+            for(let i =0; i<result.length; i++){
+                db.query(`Select * from requests join hospitals where receiver_hid = h_id and request_id = ${result[i].request_id} order by request_datetime desc`, (err, myRes, fields)=>{
+                    if (err) throw err
+                    else if(i === result.length-1){
+                        myRequests.push(myRes)
+                        res.send(myRequests)
+                    }
+                    else{
+                        myRequests.push(myRes)
+                    }
+                })
+            }
+        }
+    })
+})
+
+app.post('/acceptRequest', (req, res)=>{
+    db.query(`Update sender set accepted = 1 where request_id = ${req.body.r_id} and sender_id = ${req.body.iso}`, (err, result, fields)=>{
+        if (err) throw err
+        else{
+            db.query(`Delete from sender where request_id = ${req.body.r_id} and accepted = ${0}`)
+        }
+    })
+})
+
+app.post('/deleteRequest', (req, res)=>{
+    db.query(`Delete from sender where request_id = ${req.body.r_id} and sender_id = ${req.body.iso}`)
 })
 
 app.listen(3001, ()=>{

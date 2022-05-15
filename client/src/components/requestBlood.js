@@ -109,7 +109,7 @@ class RequestBloodClass extends Component {
                         <div className="checkbox">
                         <label><input onChange={this.handleToggle} type="checkbox" name="remember" /> confirm</label>
                         </div>
-                        <button type="button" onClick={this.handleSubmit} disabled={!this.state.toggleState} className="btn btn-default">Submit</button>
+                        <button type="button" onClick={this.handleSubmit} disabled={!this.state.toggleState} className="btn btn-success">Submit</button>
                     </form>
                     {this.state.emptyErr && <h5 style={{color: "red"}}>Invalid Quantity (only numbers)</h5>}
                     {this.state.rangeErr && <h5 style={{color: "red"}}>Quantity should be between 1 to 100</h5>}

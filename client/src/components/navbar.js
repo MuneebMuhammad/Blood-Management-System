@@ -17,13 +17,13 @@ class NavBar extends Component {
 
                     <ul className="nav nav-pills">
                     <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/">Login/Signup</a>
+                    <a className="nav-link active" aria-current="page" href="/">{this.props.guest == 'false' ? "Login/Signup": "Log out"}</a>
                     </li>
                     <li className="nav-item">
                     <a className={this.props.guest === 'true'? "nav-link disabled": "nav-link"} href="guest">Find Blood</a>
                     </li>
                     <li className="nav-item">
-                    <a className="nav-link" href="aboutus">About us</a>
+                    <a className={this.props.guest === 'true'? "nav-link disabled": "nav-link"} href="aboutus">About us</a>
                     </li>
                 </ul> 
                 </div>

@@ -4,8 +4,10 @@ import Axios from 'axios';
 class CurrentData extends Component {
 
     state = { 
-        bloodData: []
+        bloodData: [],
+        typeDict: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
      } 
+
 
     render() { 
         Axios.post('http://localhost:3001/bloodData', {iso: this.props.iso}).then((response)=>{
@@ -29,7 +31,7 @@ class CurrentData extends Component {
                     <tbody>
                         
                         {this.state.bloodData.map((answer, i)=>{
-                            return <tr><td>{answer.blood_id}</td><td>answer.blood_type_id</td><td>{answer.quantity}</td><td>{(answer.submission_date).slice(0, 10)}</td><td>{(answer.expiration_date).slice(0, 10)}</td></tr>
+                            return <tr><td>{answer.blood_id}</td><td>{this.state.typeDict[answer.blood_type_id]}</td><td>{answer.quantity}</td><td>{(answer.submission_date).slice(0, 10)}</td><td>{(answer.expiration_date).slice(0, 10)}</td></tr>
                         })}
                         
                     </tbody>
