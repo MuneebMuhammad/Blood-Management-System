@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const mysql = require('mysql')
+const { request } = require('express')
 
 
 const db = mysql.createPool({
@@ -34,7 +35,6 @@ app.post('/registerHospital', (req, res)=>{
 app.post('/login', (req, res)=>{
     const qry = 'Select * from hospitals where username = "' + req.body.userName + '" and password = "' + req.body.password + '"';
     db.query(qry, (err, result)=>{
-        console.log(result)
         if(result.length === 0){
             res.send([-1])  
         }
@@ -149,6 +149,38 @@ app.post('/acceptRequest', (req, res)=>{
 app.post('/deleteRequest', (req, res)=>{
     db.query(`Delete from sender where request_id = ${req.body.r_id} and sender_id = ${req.body.iso}`)
 })
+
+function sortFunction(a, b) {
+    if (a[0] === b[0]) {
+        return 0;
+    }
+    else {
+        return (a[0] > b[0]) ? -1 : 1;
+    }
+}
+
+app.post('/requestSent', (req, res)=>{
+    db.query(`select * from requests r join sender s where r.receiver_hid = ${req.body.iso} and r.request_id = s.request_id order by r.request_id desc`, (err, result, fields)=>{
+        if (err) throw err
+        else{
+            let requestsData = []
+            for (let element = 0; element < result.length; element ++) {
+                db.query(`select h_name, h_address, contact from hospitals where h_id = ${result[element].sender_id}`, (err2, result2, fields2)=>{
+                    if (result[element].accepted == 1){
+                        requestsData.push([result[element].request_id, result[element].blood_type_id, result[element].request_datetime, result[element].quantity, result[element].immediate_status, result2[0].h_name, result2[0].h_address, result2[0].contact])
+                    }   
+                    else{
+                        requestsData.push([result[element].request_id, result[element].blood_type_id, result[element].request_datetime, result[element].quantity, result[element].immediate_status])
+                    }
+                    if(element == result.length-1){
+                        requestsData.sort(sortFunction)
+                        res.send(requestsData);
+                    }
+                });
+            }
+        }
+    });
+});
 
 app.listen(3001, ()=>{
     console.log("Server running on port 3001")

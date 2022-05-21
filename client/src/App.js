@@ -10,6 +10,7 @@ import AddBlood from './components/addBlood';
 import RequestRecieved from './components/requestRecieved';
 import RemoveBlood from './components/removeBlood';
 import CurrentData from './components/currentData';
+import RequestSent from './components/requestSent';
 
 class Application extends Component {
   state = {  } 
@@ -28,6 +29,7 @@ class Application extends Component {
           <Route path="/requestRecieved" element={<RequestRecieved />} />
           <Route path="/removeBlood" element={<RemoveBlood />} />
           <Route path="/currentData" element={<CurrentData />} />
+          <Route path="/requestSent" element={<RequestSent />}/>
           <Route path="/noPage" element={<NoPage />} />
 
         </Routes>

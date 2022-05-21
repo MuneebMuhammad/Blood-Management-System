@@ -15,14 +15,17 @@ function RequestRecieved() {
 export default RequestRecieved;
 
 class RequestRecievedClass extends Component {
-    state = { 
+   
+      state = { 
         requestsData: [],
         typeDict: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
-     } 
+     };
 
     handleAccept = (r_id)=>{
         Axios.post('http://localhost:3001/acceptRequest', {r_id: r_id, iso: this.props.iso}).then(()=>{
-        })
+        this.setState({requestsData: [],
+            typeDict: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
+        })})
         console.log("Accepted", r_id)
     }
 
