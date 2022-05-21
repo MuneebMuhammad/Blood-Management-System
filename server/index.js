@@ -94,17 +94,35 @@ app.post('/plusBlood', (req, res)=>{
 })
 
 app.post('/removeBlood', (req, res)=>{
-    console.log(req.body.Bid)
-    db.query(`Select hid from blood where blood_id = '${req.body.Bid}'`, (err, result, fields)=>{
+    console.log(req.body.qty == "" || req.body.qty == null ? "no": req.body.qty)
+    db.query(`Select hid, quantity from blood where blood_id = '${req.body.Bid}'`, (err, result, fields)=>{
         if (err) throw err
+        // check if the hospital have the particular blood id
         else if (result.length !=0 && (req.body.iso == result[0].hid)){
-            db.query('delete from blood where blood_id = ?', [req.body.Bid], (err, result, fields)=>{
-                if (err) throw err
-                else res.send([1])
-            })
+            // check if the blood quantity was entered
+            if (req.body.qty == "" || req.body.qty == null){
+                res.send([3])  // 3 means blood quantity was not entered
+            }
+            else if (req.body.qty == result[0].quantity){
+                db.query('delete from blood where blood_id = ?', [req.body.Bid], (err, result, fields)=>{
+                    if (err) throw err
+                    else res.send([2])  // 2 means that the blood was successfully removed
+                })
+            }
+            // check if the blood quantity is less than removed quantity
+            else if(req.body.qty < result[0].quantity && req.body.qty >= 0){
+                console.log("yes")
+                db.query(`update blood set quantity = ${result[0].quantity - req.body.qty} where blood_id = ${req.body.Bid}`, (err2, result2, fields2)=>{
+                    if (err) throw err
+                    else res.send([2])
+                })
+            }
+            else{
+                res.send([1])  // 1 means that blood quantity is removed more than there was in the stock
+            }
         }
         else{
-            res.send([0])
+            res.send([0])  // 0 means that the blood_id did not existed for the hospital
         }
     })
 })
