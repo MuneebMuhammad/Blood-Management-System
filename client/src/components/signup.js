@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router';
 import NavBar from './navbar';
 import Axios from 'axios';
+import GetLocation from './getLocation';
 
 function SignUp() {
   let navigate = useNavigate()
@@ -24,10 +25,15 @@ class SignUpClass extends Component {
         care: "1",
         iso: "",
         address: "",
+        longitude: "",
+        latitude: "",
         emptyErr: false,
         passErr: false,
         isoErr: false,
-        termsToggle: true
+        termsToggle: true,
+        longerr: true,
+        laterr: true,
+        nolocerr: false
      } 
 
      
@@ -41,6 +47,9 @@ class SignUpClass extends Component {
         else if (this.state.pass !== this.state.cfmPass){
             this.setState({passErr: true})
         }
+        else if (this.state.laterr || this.state.longerr){
+            this.setState({nolocerr:true})
+        }
         else{
             Axios.get('http://localhost:3001/hospitalIso').then((response)=>{
             for (let i =0; i< (response.data).length; i++){
@@ -52,7 +61,7 @@ class SignUpClass extends Component {
             }
                 if (!isoe){
                     Axios.post('http://localhost:3001/registerHospital', {name: this.state.name, userName: this.state.userName, pass: this.state.pass,
-                    cfmPass: this.state.pass, phn: this.state.phn, city: this.state.city, care: this.state.care, iso: this.state.iso, address: this.state.address}).then(()=>{
+                    cfmPass: this.state.pass, phn: this.state.phn, city: this.state.city, care: this.state.care, iso: this.state.iso, address: this.state.address, latitude: this.state.latitude, longitude: this.state.longitude}).then(()=>{
                     });
                     console.log("Hospital Regestered")
                     this.setState({isoErr: false, emptyErr: false, passErr: false})
@@ -65,6 +74,8 @@ class SignUpClass extends Component {
            
         }
     }
+
+
 
     handleToggle = ()=>{
         let newToggle = this.state.termsToggle === true? false : true;
@@ -114,6 +125,30 @@ class SignUpClass extends Component {
     handleAddr = (event)=>{
         this.setState({address: event.target.value})
         this.setState({passErr: false, emptyErr: false, isoErr: false})
+    }
+
+    position = async () => {
+      await navigator.geolocation.getCurrentPosition(
+        position => this.setState({ 
+          latitude: position.coords.latitude, 
+          longitude: position.coords.longitude,
+          longerr: false,
+          laterr: false,
+          nolocerr: false
+        }),
+        err => console.log(err)
+      );
+      
+        if(this.state.latitude === "" && this.state.longitude === ""){
+          this.setState({
+            longerr: true,
+            laterr: true
+          })
+        }
+        else{
+
+        }
+
     }
 
     render() { 
@@ -212,6 +247,14 @@ class SignUpClass extends Component {
                     </div>
                   </div>
 
+                  <div className="d-flex flex-row align-items-center mb-4">
+                    <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                    <div className="form-outline flex-fill mb-0">
+                      <button id='locBtn' type="button" className = "btn btn-success" onClick={this.position}>Get Location</button>
+                      <label className="form-label" htmlFor="form3Example3c">Allow hospital to get your location</label>
+                    </div>
+                  </div>
+
                   <div className="form-check d-flex justify-content-center mb-5">
                     <input onChange={this.handleToggle} className="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
                     <label className="form-check-label" htmlFor="form2Example3">
@@ -223,12 +266,14 @@ class SignUpClass extends Component {
                   {this.state.emptyErr && <h6 style={{textDecorationLine: 'underline'}}> Kindly fill all the fields</h6>}
                   {this.state.passErr && <h6 style={{textDecorationLine: 'underline'}}> Passwords do not match</h6>}
                   {this.state.isoErr && <h6 style={{textDecorationLine: 'underline'}}> Iso or username already exists</h6>}
-
+                  {this.state.nolocerr && <h6 style={{textDecorationLine: 'underline'}}> You need to allow access to your location</h6>}
                   </div>
 
                   <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4" >
                     <button onClick={(e) => this.handleRegister(e)} disabled={this.state.termsToggle} type="button" className="btn btn-primary btn-lg">Register</button>
                   </div>
+
+                  
 
                 </form>
 
@@ -247,7 +292,7 @@ class SignUpClass extends Component {
   </div>
 </section>
 
-            </React.Fragment>
+            </React.Fragment >
         );
     }
 }

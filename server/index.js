@@ -25,8 +25,8 @@ app.get('/hospitalIso', (req, res)=>{
 });
 
 app.post('/registerHospital', (req, res)=>{
-    const qry = "Insert into hospitals values(?,?,?,?,?,?,?)"
-    db.query(qry, [req.body.iso, req.body.name, req.body.address, req.body.city, req.body.care, req.body.userName, req.body.pass], (err, result)=>{
+    const qry = "Insert into hospitals values(?,?,?,?,?,?,?,?,?,?)"
+    db.query(qry, [req.body.iso, req.body.name, req.body.address, req.body.city, req.body.care, req.body.userName, req.body.pass, req.body.phn, req.body.longitude, req.body.latitude], (err, result)=>{
         console.log(err)
     })
     res.sendStatus(200)
@@ -177,7 +177,9 @@ function sortFunction(a, b) {
     }
 }
 
+
 app.post('/requestSent', (req, res)=>{
+    // get all requests of the current hospital
     db.query(`select * from requests r join sender s where r.receiver_hid = ${req.body.iso} and r.request_id = s.request_id order by r.request_id desc`, (err, result, fields)=>{
         if (err) throw err
         else{
@@ -188,10 +190,15 @@ app.post('/requestSent', (req, res)=>{
                         requestsData.push([result[element].request_id, result[element].blood_type_id, result[element].request_datetime, result[element].quantity, result[element].immediate_status, result2[0].h_name, result2[0].h_address, result2[0].contact])
                     }   
                     else{
-                        requestsData.push([result[element].request_id, result[element].blood_type_id, result[element].request_datetime, result[element].quantity, result[element].immediate_status])
+                        if (result[element].request_id != result[element+1].request_id){
+                            requestsData.push([result[element].request_id, result[element].blood_type_id, result[element].request_datetime, result[element].quantity, result[element].immediate_status])
+                        }
+                        
                     }
                     if(element == result.length-1){
+                        
                         requestsData.sort(sortFunction)
+                        console.log(requestsData)
                         res.send(requestsData);
                     }
                 });
