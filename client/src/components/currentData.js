@@ -5,7 +5,7 @@ class CurrentData extends Component {
 
     state = { 
         bloodData: [],
-        typeDict: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
+        typeDict: [0, 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
      } 
 
 

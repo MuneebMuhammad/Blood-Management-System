@@ -20,10 +20,11 @@ class RequestBloodClass extends Component {
         toggleState: false,
         qty: "a",
         bloodType: 1,
-        immdStat: 1,
+        immdStat: "",
         emptyErr: false,
         rangeErr: false,
-        correct: false
+        correct: false,
+        notFound: false
      } 
     
     handleSubmit = ()=>{
@@ -34,8 +35,13 @@ class RequestBloodClass extends Component {
             this.setState({rangeErr: true})
         }
         else{
-            this.setState({correct: true})
-            Axios.post('http://localhost:3001/requestBlood', {iso: this.props.iso[0], bloodType: this.state.bloodType, qty: this.state.qty, immdStat: this.state.immdStat}).then(()=>{})
+            this.setState({correct: true, qty:"a"})
+            Axios.post('http://localhost:3001/requestBlood', {iso: this.props.iso[0], bloodType: this.state.bloodType, qty: this.state.qty, needBefore: this.state.immdStat}).then((response)=>{
+                console.log(response.data[0])
+                if (response.data[0] === 0){
+                    this.setState({correct: false, notFound: true})
+                }
+            })
 
         }
     }
@@ -46,20 +52,21 @@ class RequestBloodClass extends Component {
     }
 
     handleType = (event)=>{
-        this.setState({bloodType: event.target.value, emptyErr: false, rangeErr: false, correct: false})
+        this.setState({bloodType: event.target.value, emptyErr: false, rangeErr: false, correct: false, notFound: false})
     }
 
     handleQty = (event)=>{
         if (!isNaN(event.target.value)){
-            this.setState({qty: parseInt(event.target.value), emptyErr: false, rangeErr: false, correct: false})
+            this.setState({qty: parseInt(event.target.value), emptyErr: false, rangeErr: false, correct: false, notFound: false})
         }
         else{
-            this.setState({emptyErr: true, rangeErr: false, correct: false})
+            this.setState({emptyErr: true, rangeErr: false, correct: false, notFound: false})
         }
     }
 
     handleImmd = (event)=>{
-        this.setState({immdStat: event.target.value, emptyErr: false, rangeErr: false, correct: false})
+        console.log(event.target.value)
+        this.setState({immdStat: event.target.value, emptyErr: false, rangeErr: false, correct: false, notFound: false})
     }
 
 
@@ -90,20 +97,11 @@ class RequestBloodClass extends Component {
                         <input type="text" className="form-control" id="qty" placeholder="Pints" name="qty" onChange={this.handleQty}/>
                         </div>
 
-                        <div className="form-group">
-                        <label htmlFor="urgent">Urgent Status (10 most urgent)</label>
-                        <select id="urgent" className="form-control" onChange={this.handleImmd}>
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                            <option value={6}>6</option>
-                            <option value={7}>7</option>
-                            <option value={8}>8</option>
-                            <option value={9}>9</option>
-                            <option value={10}>10</option>
-                        </select>
+                       
+
+                        <div className="form-group col-md-2">
+                        <label htmlFor="needbefore">Need Before</label>
+                        <input type="date" onChange={this.handleImmd} className="form-control" id="needbefore" name="needbefore" />
                         </div>
                         
                         <div className="checkbox">
@@ -113,6 +111,7 @@ class RequestBloodClass extends Component {
                     </form>
                     {this.state.emptyErr && <h5 style={{color: "red"}}>Invalid Quantity (only numbers)</h5>}
                     {this.state.rangeErr && <h5 style={{color: "red"}}>Quantity should be between 1 to 100</h5>}
+                    {this.state.notFound && <h5 style={{color: "red"}}>Sorry, we couldn't find what you want</h5>}
                     {this.state.correct && <h5 style={{color: "green"}}>Successfully Request Send!</h5>}
                     </div>
   
