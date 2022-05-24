@@ -35,7 +35,7 @@ class RequestBloodClass extends Component {
             this.setState({rangeErr: true})
         }
         else{
-            this.setState({correct: true, qty:"a"})
+            this.setState({correct: true})
             Axios.post('http://localhost:3001/requestBlood', {iso: this.props.iso[0], bloodType: this.state.bloodType, qty: this.state.qty, needBefore: this.state.immdStat}).then((response)=>{
                 console.log(response.data[0])
                 if (response.data[0] === 0){

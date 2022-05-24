@@ -237,15 +237,22 @@ app.post('/requestRecieved', (req, res)=>{
         if (err) throw err
         else{
             let myRequests = [];
+            let arrayLength = 0; // this is used to solve asynchronous error
             for(let i =0; i<result.length; i++){
+                console.log("number: ", i)
                 db.query(`Select * from requests join hospitals where receiver_hid = h_id and request_id = ${result[i].request_id} order by request_datetime desc`, (err, myRes, fields)=>{
                     if (err) throw err
-                    else if(i === result.length-1){
+                    else if(arrayLength === result.length-1){
+                        console.log("last")
                         myRequests.push(myRes)
+                        console.log(myRequests)
                         res.send(myRequests)
+                        arrayLength ++;
                     }
                     else{
+                        console.log("first")
                         myRequests.push(myRes)
+                        arrayLength ++;
                     }
                 })
             }
@@ -254,16 +261,21 @@ app.post('/requestRecieved', (req, res)=>{
 })
 
 app.post('/acceptRequest', (req, res)=>{
+    console.log("accepted")
     db.query(`Update sender set accepted = 1 where request_id = ${req.body.r_id} and sender_id = ${req.body.iso}`, (err, result, fields)=>{
         if (err) throw err
         else{
-            db.query(`Delete from sender where request_id = ${req.body.r_id} and accepted = ${0}`)
+            db.query(`Delete from sender where request_id = ${req.body.r_id} and accepted = ${0}`, (err, result)=>{
+                res.sendStatus(200)
+            })
         }
     })
 })
 
 app.post('/deleteRequest', (req, res)=>{
-    db.query(`Delete from sender where request_id = ${req.body.r_id} and sender_id = ${req.body.iso}`)
+    db.query(`Delete from sender where request_id = ${req.body.r_id} and sender_id = ${req.body.iso}`, (err, result)=>{
+        res.sendStatus(200)
+    })
 })
 
 function sortFunction(a, b) {
@@ -285,11 +297,11 @@ app.post('/requestSent', (req, res)=>{
             for (let element = 0; element < result.length; element ++) {
                 db.query(`select h_name, h_address, contact from hospitals where h_id = ${result[element].sender_id}`, (err2, result2, fields2)=>{
                     if (result[element].accepted == 1){
-                        requestsData.push([result[element].request_id, blood_type_array[result[element].blood_type_id], result[element].request_datetime, result[element].quantity, (result[element].needBefore).toString().slice(0,10), result2[0].h_name, result2[0].h_address, result2[0].contact])
+                        requestsData.push([result[element].request_id, blood_type_array[result[element].blood_type_id], result[element].request_datetime, result[element].quantity, (result[element].needBefore).toString().slice(4,15), result2[0].h_name, result2[0].h_address, result2[0].contact])
                     }   
                     else{
                         if (element != result.length-1 && result[element].request_id != result[element+1].request_id){
-                            requestsData.push([result[element].request_id, blood_type_array[result[element].blood_type_id], result[element].request_datetime, result[element].quantity, (result[element].needBefore).toString().slice(0,10)])
+                            requestsData.push([result[element].request_id, blood_type_array[result[element].blood_type_id], result[element].request_datetime, result[element].quantity, (result[element].needBefore).toString().slice(4,15)])
                         }
                         
                     }

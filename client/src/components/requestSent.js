@@ -46,7 +46,7 @@ class RequestSentClass extends Component {
                         <th scope="col">Blood Type</th>
                         <th scope="col">Quantity</th>
                         <th scope='col'>Request Date</th>
-                        <th scope="col">Urgency</th>
+                        <th scope="col">Need Before</th>
                         <th scope="col">Acceptance</th>
                         </tr>
                     </thead>
