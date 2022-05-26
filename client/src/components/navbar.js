@@ -16,15 +16,16 @@ class NavBar extends Component {
                     </MediaQuery>
 
                     <ul className="nav nav-pills">
-                    <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/">{this.props.guest == 'false' ? "Login/Signup": "Log out"}</a>
-                    </li>
-                    <li className="nav-item">
-                    <a className={this.props.guest === 'true'? "nav-link disabled": "nav-link"} href="guest">Find Blood</a>
-                    </li>
-                    <li className="nav-item">
-                    <a className={this.props.guest === 'true'? "nav-link disabled": "nav-link"} href="aboutus">About us</a>
-                    </li>
+                        <li className="nav-item">
+                        </li>
+                        <li className="nav-item">
+                        <a className={this.props.guest === 'true'? "nav-link disabled": "nav-link"} href="guest">Find Blood</a>
+                        </li>
+                        <li className="nav-item">
+                        <a className={this.props.guest === 'true'? "nav-link disabled": "nav-link"} href="aboutus">About us</a>
+                        </li>
+                        <a className="nav-link active" aria-current="page" href="/login">{this.props.guest == 'false' ? "Portal": "Log out"}</a>
+
                 </ul> 
                 </div>
             </nav>

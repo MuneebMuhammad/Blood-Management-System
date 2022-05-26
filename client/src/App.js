@@ -11,6 +11,7 @@ import RequestRecieved from './components/requestRecieved';
 import RemoveBlood from './components/removeBlood';
 import CurrentData from './components/currentData';
 import RequestSent from './components/requestSent';
+import Home from './components/landingPage';
 
 class Application extends Component {
   state = {  } 
@@ -18,7 +19,7 @@ class Application extends Component {
     return (
       <Router>
         <Routes>
-          <Route path ="/" element={<LogSign />} />
+          <Route path ="/" element={<Home />} />
           <Route path="/aboutus" element={<h6>about page</h6>}/>
           <Route path="/guest" element={<h6>Guest page</h6>}/>
           <Route path="/signup" element={<SignUp />} />
