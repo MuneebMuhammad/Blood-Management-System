@@ -17,6 +17,7 @@ class NavBar extends Component {
 
                     <ul className="nav nav-pills">
                         <li className="nav-item">
+                        <a className={"nav-link"} href="/">Home</a>
                         </li>
                         <li className="nav-item">
                         <a className={this.props.guest === 'true'? "nav-link disabled": "nav-link"} href="guest">Find Blood</a>

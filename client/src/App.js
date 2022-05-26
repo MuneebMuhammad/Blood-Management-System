@@ -12,6 +12,7 @@ import RemoveBlood from './components/removeBlood';
 import CurrentData from './components/currentData';
 import RequestSent from './components/requestSent';
 import Home from './components/landingPage';
+import AboutUs from './components/aboutUs';
 
 class Application extends Component {
   state = {  } 
@@ -20,7 +21,7 @@ class Application extends Component {
       <Router>
         <Routes>
           <Route path ="/" element={<Home />} />
-          <Route path="/aboutus" element={<h6>about page</h6>}/>
+          <Route path="/aboutus" element={<AboutUs />}/>
           <Route path="/guest" element={<h6>Guest page</h6>}/>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LoginFunc />} />

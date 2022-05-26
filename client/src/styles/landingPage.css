@@ -66,6 +66,7 @@
     background-color: #f8f9fa;
     object-fit: cover;
     background-size: cover;
+    overflow: hidden;
 }
 
 .lower-container{

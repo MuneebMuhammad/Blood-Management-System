@@ -1,0 +1,21 @@
+.aboutus{
+    padding-top: 5vh;
+    font-weight: 600;
+    font-size: 5vh;
+}
+
+.text{
+    padding-top: .5vh;
+    font-weight: 400;
+    font-size: 2.5vh;
+}
+
+.cc{
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to top, #feada6 0%, #f5efef 100%);
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    color: rgb(55, 50, 50);
+}
