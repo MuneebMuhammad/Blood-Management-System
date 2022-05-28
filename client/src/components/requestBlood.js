@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import NoPage from './noPage';
 import SubNavbar from './SubNavBar';
 import Axios from 'axios';
+import Hamburger from './hamburger';
 
 function RequestBlood() {
     let {state} = useLocation()  // gets the value passed in usenavigate() hook
@@ -74,6 +75,7 @@ class RequestBloodClass extends Component {
         return (
             <React.Fragment>
                 <NavBar guest="true"/>
+                <Hamburger />
                 <SubNavbar iso={this.props.iso} page="rb"/>
                 <div className="container" >
                     <h2>Request Details</h2>

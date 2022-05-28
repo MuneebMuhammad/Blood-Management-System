@@ -5,7 +5,7 @@ import NavBar from './navbar';
 function AboutUs() {
   return (
     <div>
-        <div className='cc'>
+        <div className='wrapper-about'>
         <NavBar guest="false"/>
             <p className='aboutus'>Who Are We?</p>
             <p className='text'>An online portal that gathers information of blood donations across 
