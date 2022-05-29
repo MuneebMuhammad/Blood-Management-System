@@ -5,6 +5,7 @@ import NavBar from './navbar';
 import SubNavbar from './SubNavBar';
 import { useNavigate } from 'react-router';
 import Axios from 'axios';
+import Hamburger from './hamburger';
 
 function RequestRecieved() {
     let navigate = useNavigate()
@@ -48,6 +49,7 @@ class RequestRecievedClass extends Component {
         return (
             <React.Fragment>
                 <NavBar guest="true" />
+                <Hamburger iso={this.props.iso}/>
                 <SubNavbar iso={this.props.iso} page="rr"/>
                 <table className="table table-striped">
                     <thead>

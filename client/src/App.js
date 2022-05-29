@@ -11,6 +11,9 @@ import RequestRecieved from './components/requestRecieved';
 import RemoveBlood from './components/removeBlood';
 import CurrentData from './components/currentData';
 import RequestSent from './components/requestSent';
+import Home from './components/landingPage';
+import AboutUs from './components/aboutUs';
+import Guest from './components/guest';
 
 class Application extends Component {
   state = {  } 
@@ -18,9 +21,9 @@ class Application extends Component {
     return (
       <Router>
         <Routes>
-          <Route path ="/" element={<LogSign />} />
-          <Route path="/aboutus" element={<h6>about page</h6>}/>
-          <Route path="/guest" element={<h6>Guest page</h6>}/>
+          <Route path ="/" element={<Home />} />
+          <Route path="/aboutus" element={<AboutUs />}/>
+          <Route path="/guest" element={<Guest />}/>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LoginFunc />} />
           <Route path="/termscond" element={<h6>These are the terms and conditions</h6>}/>

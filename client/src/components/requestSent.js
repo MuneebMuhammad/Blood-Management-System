@@ -5,6 +5,7 @@ import NavBar from './navbar';
 import SubNavbar from './SubNavBar';
 import Axios from 'axios';
 import { Dropdown } from 'react-bootstrap';
+import Hamburger from './hamburger';
 
 function RequestSent() {
     let {state} = useLocation()  // gets the value passed in usenavigate() hook
@@ -39,6 +40,7 @@ class RequestSentClass extends Component {
         return (
             <React.Fragment>
                 <NavBar guest="true" />
+                <Hamburger iso={this.props.iso}/>
                 <SubNavbar iso={this.props.iso} page="rs"/>
                 <table className="table table-striped" >
                     <thead>

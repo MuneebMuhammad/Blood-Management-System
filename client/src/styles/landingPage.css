@@ -1,0 +1,183 @@
+
+
+.dark-overlay{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2%;
+}
+
+.page-name{
+    color: rgb(241, 54, 54);
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%,-40%);
+    font-size: 4rem;
+}
+
+.motto{
+    color: antiquewhite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 1.5rem;
+}
+
+
+.about-header{
+    position: absolute;
+    top: 20vh;
+    left:5vw;
+    height: 70vh;
+    width:90vw;
+    background-image: url(../../public/blood-operation.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 2%;
+
+    animation-name: animate-bg;
+    animation-direction: alternate-reverse;
+    animation-duration: 20s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+    animation-timing-function: linear;
+}
+
+@keyframes animate-bg{
+    
+    0%{ background-image: url(../../public/blood-operation.jpg);}
+    25%{background-image: url(../../public/hospital-hallway.jpg);}
+    50%{background-image: url(../../public/medicine-healthcare.jpg);}
+    75%{background-image: url(../../public/hospital-building.jpg);}
+    100%{background-image: url(../../public/blood-operation.jpg);}
+}
+
+
+.container-2{
+    height:100vh;
+    width: 100%;
+    background-color: #f8f9fa;
+    object-fit: cover;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.lower-container{
+    height: 80vh;
+    width: 90vw;
+    position: relative;
+    top: 10vh;
+    left: 5vw;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: row;
+}
+.lower-container-image{
+    height: 100%;
+    width: 50%;
+    background-image: url(../../public/hospital-emergency-entrance-architecture-building-doctor.jpg);  
+}
+
+.lower-container-right{ 
+    height: 100%;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+.find-blood-text{
+    position: relative;
+    left: 60%;
+    top: 40%;
+    transform: translate(-40%,-60%);
+    color: rgb(207, 7, 7);
+    font-size: 5vh;
+    font-weight: 600;
+}
+
+.button-find{
+    position: relative;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%,-40%);
+    border: 2px solid rgb(207, 7, 7);
+    padding: 1% 2%;
+    border-radius: 20%;
+    color: rgb(207, 7, 7);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.button-find:hover{
+    color: #eeeeee;
+    border: 0;
+    background-color: rgb(207, 7, 7);
+}
+
+.header-image{
+    position: relative;
+    left: 5vw;
+    height: 40vh;
+    width: 90vw;
+    background-image: url(../../public/save-lives-donate-blood1.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.portal-btn{
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    border: 2px solid rgb(207, 7, 7);
+    padding: 1% 2%;
+    border-radius: 20%;
+    color: rgb(207, 7, 7);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.portal-btn:hover{
+    color: #eeeeee;
+    border: 0;
+    background-color: rgb(207, 7, 7);
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans|Roboto');
+
+table{
+ width: 60%; 
+ border-collapse: collapse;
+ border-spacing: 0;
+ box-shadow: 0 2px 15px rgba(64,64,64,.7);
+ border-radius: 12px 12px 0 0;
+ overflow: hidden;
+
+}
+
+td , th{
+ padding: 15px 20px;
+ text-align: center;
+}
+th{
+ background-color: #f7f7f7;
+ color: #000000;
+ font-family: 'Open Sans',Sans-serif;
+ font-weight: 200;
+ text-transform: uppercase;
+
+}
+tr{
+ width: 100%;
+ /* background-color: #fafafa; */
+ font-family: 'Montserrat', sans-serif;
+}

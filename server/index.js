@@ -50,6 +50,7 @@ app.post('/login', (req, res)=>{
 // returns most appropriate hospitals to whom the request will be sent
 // returns most appropriate hospitals to whom the request will be sent
 
+
 function findNearHospital(res, r_id, iso, longitude, latitude, blood_type_id, quantity, beforeDate){
     //date in the arguments contains the date when the blood is required in the format 'YYYY-MM-DD'
     // bloodid = query(select blood_type_id from blood where blood_type = ${bloodType})
@@ -89,11 +90,15 @@ function findNearHospital(res, r_id, iso, longitude, latitude, blood_type_id, qu
                     totalScore += score
                 }
             }
+            
             // if no hospitals were found for this request then set finalAnswer to [-2]
             if (result.length === 0){
                 finalAnswer = [-2]
             }
             else{
+                if (result.length > 1){
+                    hospitalScore.push([result[result.length - 1].h_id, totalScore])
+                }
                 // array of hospital score containing score of each hospital
                 hospitalScore.sort(sortFunction);
                 var finalAnswer = hospitalScore.map(function(value,index) { return value[0]; });
@@ -105,13 +110,32 @@ function findNearHospital(res, r_id, iso, longitude, latitude, blood_type_id, qu
                 res.send([0])
             }
             else{
-                finalAnswer.forEach(element => {
-                    // Insert requests recievers in sender table
-                    db.query('insert into sender (request_id, sender_id) values (?, ?);', [r_id, element], function(err, result, fields){
-                        if (err) throw err;
-                    })
-                });
-                res.send([1])
+                if (iso === -1){ // guest using
+                    // write a query to get h_name, h_address, h_city, care_id, contact of all the hospitals in finalAnswer
+                    // store hospital details in 2d array
+                    // send the 2d array back to client
+                    hospitalData = [];
+                    index = 0;
+                    for (let element = 0; element< finalAnswer.length; element++)
+                    {
+                        db.query(`select h_name, h_address, h_city, care_id, contact from hospitals where h_id = ${finalAnswer[element]}`, (err, result)=>{
+                            hospitalData.push(result)
+                            if (index === finalAnswer.length -1){
+                                res.send(hospitalData)
+                            }    
+                            index++;
+                        })
+                    }
+                }
+                else{
+                    finalAnswer.forEach(element => {
+                        // Insert requests recievers in sender table
+                        db.query('insert into sender (request_id, sender_id) values (?, ?);', [r_id, element], function(err, result, fields){
+                            if (err) throw err;
+                        })
+                    });
+                    res.send([1])
+                } 
             }
             return finalAnswer
         }
@@ -182,6 +206,10 @@ app.post('/requestBlood', (req, res)=>{
          
     })
     
+})
+
+app.post('/guest', (req, res)=>{
+    findNearHospital(res, 0, -1, req.body.longitude, req.body.latitude, req.body.bloodType, req.body.qty, req.body.beforeDate)
 })
 
 app.post('/plusBlood', (req, res)=>{

@@ -1,24 +1,10 @@
 import React, { Component } from 'react';
 import NavBar from './navbar';
-import { useLocation } from "react-router-dom";
-import NoPage from './noPage';
-import SubNavbar from './SubNavBar';
 import Axios from 'axios';
-import Hamburger from './hamburger';
 
-function RequestBlood() {
-    let {state} = useLocation()  // gets the value passed in usenavigate() hook
-    return ( 
-       state === null || state === undefined? <NoPage /> : <RequestBloodClass iso = {state.iso}/>  // if user is not logged in then show error
-     );
-}
-
-export default RequestBlood;
-
-class RequestBloodClass extends Component {
+class Guest extends Component {
 
     state = { 
-        toggleState: false,
         qty: "a",
         bloodType: 1,
         immdStat: "",
@@ -26,7 +12,14 @@ class RequestBloodClass extends Component {
         emptyErr: false,
         rangeErr: false,
         correct: false,
-        notFound: false
+        notFound: false,
+        latitude: "",
+        longitude: "",
+        longerr: true,
+        laterr: true,
+        nolocerr: false,
+        careTypes: [0, 'Primary', 'Secondary', 'Tertiary'],
+        hospitalData: []
      } 
     
     handleSubmit = ()=>{
@@ -39,21 +32,22 @@ class RequestBloodClass extends Component {
         else if (this.state.immdStat === ""){
             this.setState({emptyDate: true})
         }
+        else if(this.state.longerr === true){
+            this.setState({nolocerr: true})
+        }
         else{
-            this.setState({correct: true})
-            Axios.post('http://localhost:3001/requestBlood', {iso: this.props.iso[0], bloodType: this.state.bloodType, qty: this.state.qty, needBefore: this.state.immdStat}).then((response)=>{
-                console.log(response.data[0])
-                if (response.data[0] === 0){
-                    this.setState({correct: false, notFound: true})
+            this.setState({correct: true})    
+            Axios.post('http://localhost:3001/guest', {longitude: this.state.longitude, latitude: this.state.latitude, bloodType: this.state.bloodType, qty: this.state.qty, beforeDate: this.state.immdStat}).then((response)=>{
+                // no hospital found
+                if (response.data == [0]){
+                    console.log("Sorry! We couldn't find any hospitals");
+                }
+                // hospitals found
+                else{
+                    this.setState({hospitalData: response.data});
                 }
             })
-
         }
-    }
-
-    handleToggle = ()=>{
-        let newstate = this.state.toggleState ? false : true;
-        this.setState({toggleState: newstate})
     }
 
     handleType = (event)=>{
@@ -74,14 +68,35 @@ class RequestBloodClass extends Component {
         this.setState({immdStat: event.target.value, emptyErr: false, rangeErr: false, correct: false, notFound: false, emptyDate: false})
     }
 
+    position = async () => {
+        await navigator.geolocation.getCurrentPosition(
+          position => this.setState({ 
+            latitude: position.coords.latitude, 
+            longitude: position.coords.longitude,
+            longerr: false,
+            laterr: false,
+            nolocerr: false
+          }),
+          err => console.log(err)
+        );
+        
+          if(this.state.latitude === "" && this.state.longitude === ""){
+            this.setState({
+              longerr: true,
+              laterr: true
+            })
+          }
+          else{
+  
+          }
+  
+    }
 
     render() { 
         return (
             <React.Fragment>
                 <NavBar guest="true"/>
-                <Hamburger iso={this.props.iso}/>
-                <SubNavbar iso={this.props.iso} page="rb"/>
-                <div className="container" >
+                <div style={{marginTop: "30px"}} className="container" >
                     <h2>Request Details</h2>
                     <form>
                     <div className="form-group">
@@ -103,23 +118,42 @@ class RequestBloodClass extends Component {
                         <input type="text" className="form-control" id="qty" placeholder="Pints" name="qty" onChange={this.handleQty}/>
                         </div>
 
-                       
-
                         <div className="form-group col-md-2">
                         <label htmlFor="needbefore">Need Before</label>
                         <input type="date" onChange={this.handleImmd} className="form-control" id="needbefore" name="needbefore" />
                         </div>
                         
-                        <div className="checkbox">
-                        <label><input onChange={this.handleToggle} type="checkbox" name="remember" /> confirm</label>
+                        {this.state.longerr && 
+                        <div className="form-group col-md-2" style={{marginTop: "5px", marginBottom: "5px"}}>
+                        <label htmlFor="form3Example3c">Allow hospital to get your location</label>
+                        <button id='locBtn' type="button" className = "btn btn-success" onClick={this.position}>Get Location</button>    
                         </div>
-                        <button type="button" onClick={this.handleSubmit} disabled={!this.state.toggleState} className="btn btn-success">Submit</button>
+                        }
+                        <button type="button" style={{marginTop: "20px"}} onClick={this.handleSubmit} disabled={(this.state.longerr)} className="btn btn-success">Submit</button>
                     </form>
+
                     {this.state.emptyErr && <h5 style={{color: "red"}}>Invalid Quantity (only numbers)</h5>}
                     {this.state.rangeErr && <h5 style={{color: "red"}}>Quantity should be between 1 to 100</h5>}
                     {this.state.notFound && <h5 style={{color: "red"}}>Sorry, we couldn't find what you want</h5>}
-                    {this.state.correct && <h5 style={{color: "green"}}>Successfully Request Send!</h5>}
                     {this.state.emptyDate && <h5 style={{color: "red"}}>Date field cannot be empty</h5>}
+                    {this.state.nolocerr && <h5 style={{color: "red"}}>You need to allow access to your location</h5>}
+                    <table style={{marginTop: "50px"}} className="table table-striped">
+                        <thead>
+                        <th>Hospital Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Care Type</th>
+                        <th>Contact</th>
+                        </thead>
+                        <tbody>
+                        {this.state.correct &&      
+                            this.state.hospitalData.map((Element)=>{
+                                return <tr><td>{Element[0].h_name}</td><td>{Element[0].h_address}</td><td>{Element[0].h_city}</td><td>{this.state.careTypes[Element[0].care_id]}</td><td>{Element[0].contact}</td></tr>
+                            })                              
+                        }
+                    </tbody>
+                    </table>
+
                     </div>
   
             </React.Fragment>
@@ -129,4 +163,4 @@ class RequestBloodClass extends Component {
     }
 }
  
-// export default RequestBlood;
+export default Guest;
