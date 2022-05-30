@@ -33,7 +33,8 @@ class SignUpClass extends Component {
         termsToggle: true,
         longerr: true,
         laterr: true,
-        nolocerr: false
+        nolocerr: false,
+        negativeIsoErr: false
      } 
 
      
@@ -49,6 +50,9 @@ class SignUpClass extends Component {
         }
         else if (this.state.laterr || this.state.longerr){
             this.setState({nolocerr:true})
+        }
+        else if(this.state.iso <=0){
+          this.setState({negativeIsoErr: true})
         }
         else{
             Axios.get('http://localhost:3001/hospitalIso').then((response)=>{
@@ -119,7 +123,7 @@ class SignUpClass extends Component {
 
     handleIso = (event)=>{
         this.setState({iso: event.target.value})
-        this.setState({passErr: false, emptyErr: false, isoErr: false})
+        this.setState({passErr: false, emptyErr: false, isoErr: false, negativeIsoErr: false})
     }
 
     handleAddr = (event)=>{
@@ -266,6 +270,7 @@ class SignUpClass extends Component {
                   {this.state.emptyErr && <h6 style={{textDecorationLine: 'underline'}}> Kindly fill all the fields</h6>}
                   {this.state.passErr && <h6 style={{textDecorationLine: 'underline'}}> Passwords do not match</h6>}
                   {this.state.isoErr && <h6 style={{textDecorationLine: 'underline'}}> Iso or username already exists</h6>}
+                  {this.state.negativeIsoErr && <h6 style={{textDecorationLine: 'underline'}}> Iso number need to be positive</h6>}
                   {this.state.nolocerr && <h6 style={{textDecorationLine: 'underline'}}> You need to allow access to your location</h6>}
                   </div>
 

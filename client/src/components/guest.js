@@ -125,8 +125,9 @@ class Guest extends Component {
                         
                         {this.state.longerr && 
                         <div className="form-group col-md-2" style={{marginTop: "5px", marginBottom: "5px"}}>
-                        <label htmlFor="form3Example3c">Allow hospital to get your location</label>
-                        <button id='locBtn' type="button" className = "btn btn-success" onClick={this.position}>Get Location</button>    
+                        
+                        <button id='locBtn' type="button" className = "btn btn-success" onClick={this.position}>Give Location</button>    
+                        {/* <label htmlFor="form3Example3c">Allow hospital to get your location</label> */}
                         </div>
                         }
                         <button type="button" style={{marginTop: "20px"}} onClick={this.handleSubmit} disabled={(this.state.longerr)} className="btn btn-success">Submit</button>

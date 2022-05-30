@@ -55,7 +55,7 @@ function findNearHospital(res, r_id, iso, longitude, latitude, blood_type_id, qu
     //date in the arguments contains the date when the blood is required in the format 'YYYY-MM-DD'
     // bloodid = query(select blood_type_id from blood where blood_type = ${bloodType})
     
-    qryBlood = `select hospitals.h_id, longitude, latitude, quantity, blood.expiration_date from hospitals join blood  where blood_type_id= ${blood_type_id} and hospitals.h_id = blood.hid and expiration_date >= ${beforeDate} and h_id != ${iso}`
+    qryBlood = `select hospitals.h_id, longitude, latitude, quantity, blood.expiration_date from hospitals join blood  where blood_type_id= ${blood_type_id} and hospitals.h_id = blood.hid and expiration_date >= ${beforeDate} and h_id != ${iso} and h_id >0`
     console.log('qryBlood: ', qryBlood)
     //rows of hospitals having expiration_date > givenDate
     db.query(qryBlood, (err, result)=>{
@@ -261,7 +261,7 @@ app.post('/bloodData', (req, res)=>{
 })
 
 app.post('/requestRecieved', (req, res)=>{
-    db.query(`Select * from sender where sender_id = ${req.body.iso} and accepted = 0`, (err, result, fields)=>{
+    db.query(`Select * from sender where sender_id = ${req.body.iso} and accepted = 0 and sender_id > 0`, (err, result, fields)=>{
         if (err) throw err
         else{
             let myRequests = [];
@@ -346,6 +346,15 @@ app.post('/requestSent', (req, res)=>{
         }
     });
 });
+
+app.post('/deleteAccount', (req, res)=>{
+    db.query(`update hospitals set h_id = ${parseInt(req.body.iso[0])*-1} where h_id = ${parseInt(req.body.iso[0])}`, (err, result)=>{
+        if (err) throw err;
+        else {
+            console.log("succesfully deleted data")
+        }
+    })
+})
 
 app.listen(3001, ()=>{
     console.log("Server running on port 3001")
