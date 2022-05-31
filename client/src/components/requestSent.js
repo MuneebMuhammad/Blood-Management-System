@@ -6,6 +6,8 @@ import SubNavbar from './SubNavBar';
 import Axios from 'axios';
 import { Dropdown } from 'react-bootstrap';
 import Hamburger from './hamburger';
+import {motion} from "framer-motion"
+
 
 function RequestSent() {
     let {state} = useLocation()  // gets the value passed in usenavigate() hook
@@ -55,7 +57,7 @@ class RequestSentClass extends Component {
                     <tbody>
                         
                         {this.state.myRequestData.map((element) => {
-                            return (<tr><td>{element[1]}</td><td>{element[3]}</td><td>{this.correctDate(element[2])}</td><td>{element[4]}</td>
+                            return (<motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><td>{element[1]}</td><td>{element[3]}</td><td>{this.correctDate(element[2])}</td><td>{element[4]}</td>
                             <td>
                             {element.length == 5 ? <span style={{color: "red"}}>Pending...</span>: <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -63,13 +65,16 @@ class RequestSentClass extends Component {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item>Accepted by: {element[5]}</Dropdown.Item>
-                                    <Dropdown.Item >Contact: {element[7]}</Dropdown.Item>
-                                    <Dropdown.Item>Location: {element[6]}</Dropdown.Item>
+                                    <motion.div initial={{opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ease: "easeIn", duration: 0.5 }}>
+                                        <Dropdown.Item>Accepted by: {element[5]}</Dropdown.Item>
+                                        <Dropdown.Item >Contact: {element[7]}</Dropdown.Item>
+                                        <Dropdown.Item>Location: {element[6]}</Dropdown.Item>
+                                    </motion.div>
+                                    
                                 </Dropdown.Menu>
                                 </Dropdown>}
                             </td>
-                            </tr>)
+                            </motion.tr>)
                             
                         })}
                         

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
+import { motion } from 'framer-motion';
 
 class PlusBlood extends Component {
 
@@ -11,6 +12,7 @@ class PlusBlood extends Component {
         expireErr: false,
         beginDate: "",
         expireDate: "",
+        submitDateErr: false,
         correct: false
     } 
 
@@ -28,22 +30,31 @@ class PlusBlood extends Component {
     }
 
     handleBegin = (event)=>{
-        this.setState({beginDate: (event.target.value + " 00:00:00") , emptyErr: false, rangeErr: false, expireErr: false, correct: false})
+        this.setState({beginDate: (event.target.value) , emptyErr: false, rangeErr: false, expireErr: false, correct: false, submitDateErr: false})
     }
 
     handleExpire = (event)=>{
-        this.setState({expireDate: (event.target.value + " 00:00:00"), emptyErr: false, rangeErr: false, expireErr: false, correct: false})
+        this.setState({expireDate: (event.target.value), emptyErr: false, rangeErr: false, expireErr: false, correct: false})
     }
 
     handleSubmit = ()=>{
+        let currentdate = new Date();
+        // get date in mysql date formate
+        let date_time = currentdate.getFullYear() + "-" + (currentdate.getMonth()+1) + "-" + currentdate.getDate();
+        console.log('currentdate: ', date_time);
+        console.log('submit date: ', this.state.beginDate)
+        
         if (this.state.beginDate === "" || this.state.expireDate === "") 
             this.setState({emptyErr: true})
         else if (isNaN(this.state.qty) || this.state.qty <=0 || this.state.qty >100) 
             this.setState({rangeErr: true})
         else if (this.state.beginDate > this.state.expireDate)
             this.setState({expireErr: true})
+        else if (new Date(currentdate) < new Date(this.state.beginDate)){
+            this.setState({submitDateErr: true})
+        }
         else{
-            Axios.post('http://localhost:3001/plusBlood', {iso: this.props.iso, beginDate: this.state.beginDate, expireDate: this.state.expireDate, bloodType: this.state.bloodType, qty: this.state.qty}).then(()=>{
+            Axios.post('http://localhost:3001/plusBlood', {iso: this.props.iso, beginDate: this.state.beginDate + " 00:00:00", expireDate: this.state.expireDate + " 00:00:00", bloodType: this.state.bloodType, qty: this.state.qty}).then(()=>{
                 this.setState({correct: true})
             })
         }
@@ -73,7 +84,7 @@ class PlusBlood extends Component {
                         <input type="text" className="form-control" id="qty" placeholder="Pints" name="qty" onChange={this.handleQty}/>
                     </div>
                     <div className="form-group col-md-2">
-                        <label htmlFor="beginning">Extraction Date:</label>
+                        <label htmlFor="beginning">Submission Date:</label>
                         <input type="date" onChange={this.handleBegin} className="form-control" id="beginning" name="beginning" />
                     </div>
                     <div className="form-group col-md-2">
@@ -84,8 +95,9 @@ class PlusBlood extends Component {
                     </form>
                     {this.state.expireErr && <h5 style={{color: "red"}}>Expiration date should be after extraction date</h5>}
                     {this.state.emptyErr && <h5 style={{color: "red"}}>Kindly Fill all the fields</h5>}
+                    {this.state.submitDateErr && <h5 style={{color: "red"}}>Blood submition date can't be after today</h5>}
                     {this.state.rangeErr && <h5 style={{color: "red"}}>Quantity should only contain numbers between 1 to 100</h5>}
-                    {this.state.correct && <h5 style={{color: "green"}}>Successfully Added Blood!</h5>}
+                    {this.state.correct && <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{color: "green"}}>Successfully Added Blood!</motion.h5>}
             </div>
         </React.Fragment>
         );

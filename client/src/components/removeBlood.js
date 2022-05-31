@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NavBar from './navbar';
 import SubNavbar from './SubNavBar';
 import Axios from 'axios';
+import { motion } from 'framer-motion';
 
 
 class RemoveBlood extends Component {
@@ -65,7 +66,7 @@ class RemoveBlood extends Component {
                 {this.state.missingErr && <h5 style={{color: "red", marginTop: "5px"}}>Blood id do not exist</h5>}
                 {this.state.qtyErr && <h5 style={{color: "red", marginTop: "5px"}}>Blood quantity should contain only numbers </h5>}
                 {this.state.qtyRange && <h5 style={{color: "red", marginTop: "5px"}}>Blood quantity is out of range</h5>}
-                {this.state.correct && <h5 style={{color: "green", marginTop: "5px"}}>Successfully removed blood</h5>}
+                {this.state.correct && <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{color: "green", marginTop: "5px"}}>Successfully removed blood</motion.h5>}
             </div>
                 
         </React.Fragment>

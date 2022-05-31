@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
+import {motion} from "framer-motion"
+
 
 class CurrentData extends Component {
 
@@ -24,14 +26,14 @@ class CurrentData extends Component {
                             <th scope="col">Blood id</th>
                             <th scope="col">Blood Type</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Extraction Date</th>
+                            <th scope="col">Submition Date</th>
                             <th scope="col">Expiration Date</th>
                         </tr>
                     </thead>
                     <tbody>
                         
                         {this.state.bloodData.map((answer, i)=>{
-                            return <tr><td>{answer.blood_id}</td><td>{this.state.typeDict[answer.blood_type_id]}</td><td>{answer.quantity}</td><td>{(answer.submission_date).slice(0, 10)}</td><td>{(answer.expiration_date).slice(0, 10)}</td></tr>
+                            return <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><td>{answer.blood_id}</td><td>{this.state.typeDict[answer.blood_type_id]}</td><td>{answer.quantity}</td><td>{(answer.submission_date).slice(0, 10)}</td><td>{(answer.expiration_date).slice(0, 10)}</td></motion.tr>
                         })}
                         
                     </tbody>

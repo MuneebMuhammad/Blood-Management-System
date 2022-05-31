@@ -31,7 +31,7 @@ function Hamburger() {
       <li><Link className="menu__item" to="/requestRecieved" state={{iso: state.iso}}>Request Received</Link></li>
       <li><Link className="menu__item" to="/requestSent" state={{iso: state.iso}}>Request Sent</Link></li>
       <li><a className="menu__item" href="/">Logout</a></li>
-      <li><button onClick={handleDelete} style={{height: "40px", marginTop: "90%", marginLeft: "28%", backgroundColor: "red", color: "white", borderRadius: "5px"}}>Delete Account</button></li>
+      <li><button onClick={handleDelete} style={{borderWidth: "0px", height: "40px", marginTop: "90%", marginLeft: "28%", backgroundColor: "red", color: "white", borderRadius: "5px"}}>Delete Account</button></li>
     </ul>
   </div>
   )

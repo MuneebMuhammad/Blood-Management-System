@@ -6,6 +6,8 @@ import SubNavbar from './SubNavBar';
 import { useNavigate } from 'react-router';
 import Axios from 'axios';
 import Hamburger from './hamburger';
+import {motion} from "framer-motion"
+
 
 function RequestRecieved() {
     let navigate = useNavigate()
@@ -65,7 +67,7 @@ class RequestRecievedClass extends Component {
                     </thead>
                     <tbody>
                         {this.state.requestsData.length !=0 && this.state.requestsData.map((Element)=>{
-                            return <tr><td>{this.state.typeDict[Element[0].blood_type_id]}</td><td>{Element[0].quantity}</td><td>{(Element[0].needBefore).toString().slice(0,10)}</td><td>{Element[0].h_name}</td><td>{Element[0].contact}</td><td><button type="button" className="btn" onClick={()=>this.handleAccept(Element[0].request_id)}><img style={{width: "20px", height: "20px"}} src="accept.png"></img></button></td><td><button type="button" className="btn" onClick={()=>this.handleDelete(Element[0].request_id)}><img style={{width: "20px", height: "20px"}} src={"delete.png"}></img></button></td></tr>
+                            return <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><td>{this.state.typeDict[Element[0].blood_type_id]}</td><td>{Element[0].quantity}</td><td>{(Element[0].needBefore).toString().slice(0,10)}</td><td>{Element[0].h_name}</td><td>{Element[0].contact}</td><td><motion.button whileHover={{scale: 1.1 }} type="button" className="btn" onClick={()=>this.handleAccept(Element[0].request_id)}><img style={{width: "20px", height: "20px"}} src="accept.png"></img></motion.button></td><td><motion.button whileHover={{scale: 1.1 }} type="button" className="btn" onClick={()=>this.handleDelete(Element[0].request_id)}><img style={{width: "20px", height: "20px"}} src={"delete.png"}></img></motion.button></td></motion.tr>
                         })}
                     </tbody>
                 </table>

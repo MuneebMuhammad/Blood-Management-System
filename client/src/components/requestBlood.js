@@ -5,6 +5,7 @@ import NoPage from './noPage';
 import SubNavbar from './SubNavBar';
 import Axios from 'axios';
 import Hamburger from './hamburger';
+import { motion } from 'framer-motion';
 
 function RequestBlood() {
     let {state} = useLocation()  // gets the value passed in usenavigate() hook
@@ -118,7 +119,7 @@ class RequestBloodClass extends Component {
                     {this.state.emptyErr && <h5 style={{color: "red"}}>Invalid Quantity (only numbers)</h5>}
                     {this.state.rangeErr && <h5 style={{color: "red"}}>Quantity should be between 1 to 100</h5>}
                     {this.state.notFound && <h5 style={{color: "red"}}>Sorry, we couldn't find what you want</h5>}
-                    {this.state.correct && <h5 style={{color: "green"}}>Successfully Request Send!</h5>}
+                    {this.state.correct && <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{color: "green"}}>Successfully Request Send!</motion.h5>}
                     {this.state.emptyDate && <h5 style={{color: "red"}}>Date field cannot be empty</h5>}
                     </div>
   
