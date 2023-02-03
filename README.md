@@ -9,4 +9,4 @@ Hospital is first registered in our website, where it is asked of details about 
 * In both terminal first write "npm install" to install the packages
 * In server directory run "nodemon"
 * In client directory run "npm run start"
-* You also need to have MySql database configured
+* You also need to configure mysql database with BMS.sql file
